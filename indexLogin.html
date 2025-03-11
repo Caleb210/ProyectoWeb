@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación Segura</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://8list.ph/wp-content/uploads/2020/11/A-Step-By-Step-Guide-To-Voter-Registration-During-the-Pandemic-1536x806.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+        }
+        .container h2 {
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background 0.3s ease-in-out;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+                width: 90%;
+            }
+            input, button {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .container h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inicio de Sesión</h2>
+        <form id="loginForm">
+            <label for="id">Cédula/Pasaporte:</label>
+            <input type="text" id="id" required>
+            
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" required>
+            
+            <button type="button" onclick="enviarCodigo()">Enviar Código MFA</button>
+            
+            <div id="mfaSection" style="display: none;">
+                <label for="codigo">Código MFA:</label>
+                <input type="text" id="codigo" required>
+                
+                <button type="submit">Iniciar Sesión</button>
+            </div>
+        </form>
+        <p>¿Aún no se ha registrado?</p>
+        <a href="registro.html">Haga click aquí para registrarse</a>
+    </div>
+
+    <script>
+        function enviarCodigo() {
+            alert("Código MFA enviado por SMS o correo electrónico.");
+            document.getElementById("mfaSection").style.display = "block";
+        }
+    </script>
+</body>
+</html>
+
+
+
+
