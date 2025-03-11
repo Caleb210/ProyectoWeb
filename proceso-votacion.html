@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Seleccione su Candidato</h1>
+        <div id="opciones">
+            <div class="opcion-container" onclick="seleccionarCandidato('Candidato A', this)">
+                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato A">
+                <p>Candidato A</p>
+            </div>
+            <div class="opcion-container" onclick="seleccionarCandidato('Candidato B', this)">
+                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato B">
+                <p>Candidato B</p>
+            </div>
+            <div class="opcion-container" onclick="seleccionarCandidato('Candidato C', this)">
+                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato C">
+                <p>Candidato C</p>
+            </div>
+            <div class="opcion-container" onclick="seleccionarCandidato('Candidato D', this)">
+                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato D">
+                <p>Candidato D</p>
+            </div>
+        </div>
+        <button id="confirmar-btn" onclick="mostrarModal()" disabled>Confirmar Voto</button>
+    </div>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Confirmar Voto</h2>
+            <p>¿Está seguro de que quiere votar por <span id="candidato-seleccionado"></span>?</p>
+            <button onclick="confirmarVoto()">Sí, Confirmar</button>
+            <button onclick="cerrarModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="comprobante" class="hidden">
+        <h2>Voto Registrado</h2>
+        <p id="comprobante-texto"></p>
+    </div>
+</body>
+
+</html>
