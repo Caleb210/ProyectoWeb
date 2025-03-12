@@ -44,6 +44,18 @@ function confirmarVoto() {
         document.getElementById("confirmar-btn").disabled = true;
     }
 }
+function submitComment() {
+    const textarea = document.getElementById('help-textarea');
+    const commentsDiv = document.getElementById('comments');
+    const commentText = textarea.value.trim();
+
+    if (commentText) {
+        const comment = document.createElement('p');
+        comment.textContent = commentText;
+        commentsDiv.appendChild(comment);
+        textarea.value = ''; // Limpiar el textarea
+    }
+}
 
 function generarCodigoVerificacion() {
     return Math.random().toString(36).substring(2, 10).toUpperCase();
