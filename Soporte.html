@@ -85,6 +85,23 @@
             border-radius: 0.5rem;
         }
 
+        /* Estilos nuevos para el botón de redirección */
+        .redirect-button {
+            background: #28a745;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .redirect-button:hover {
+            background: #218838;
+        }
+
         .chat-container {
             display: grid;
             gap: 1rem;
@@ -188,19 +205,24 @@
         <article class="card">
             <h1 data-translate="simulationTitle">Simulación de Votación</h1>
             
-            
             <div class="video-container">
                 <iframe 
                     src="https://www.youtube.com/embed/3wfO0jd22cw" 
                     title="Tutorial de Votación" 
                     allow="accelerometer; autoplay; encrypted-media; gyroscope" 
                     allowfullscreen
-                    loading="lazy">
-                    
+                    loading="lazy">  
                 </iframe>
-                
-                
             </div>
+            
+            <!-- Botón de redirección añadido aquí -->
+            <button 
+                class="redirect-button"
+                onclick="window.location.href='proceso-votacion.html'"
+                data-translate="goToVoting"
+                aria-label="Ir al proceso de votación real">
+                Ir a Votación Real
+            </button>
         </article>
 
         <section class="card" aria-labelledby="helpCenterTitle">
@@ -237,6 +259,7 @@
                 helpTitle: 'Centro de Ayuda',
                 chatTitle: 'Asistente Virtual',
                 sendButton: 'Enviar',
+                goToVoting: 'Ir a Votación Real',
                 helpPlaceholder: 'Escribe tu consulta o comentario...',
                 chatPlaceholder: 'Escribe tu pregunta...',
                 responses: {
@@ -271,6 +294,7 @@
                 helpTitle: 'Help Center',
                 chatTitle: 'Virtual Assistant',
                 sendButton: 'Send',
+                goToVoting: 'Go to Real Voting',
                 helpPlaceholder: 'Type your query or comment...',
                 chatPlaceholder: 'Type your question...',
                 responses: {
@@ -305,6 +329,7 @@
                 helpTitle: 'Centre d\'Aide',
                 chatTitle: 'Assistant Virtuel',
                 sendButton: 'Envoyer',
+                goToVoting: 'Aller au Vote Réel',
                 helpPlaceholder: 'Écrivez votre question ou commentaire...',
                 chatPlaceholder: 'Écrivez votre question...',
                 responses: {
@@ -454,7 +479,6 @@
             }
 
             initComments() {
-                // Cargar comentarios existentes desde localStorage
                 const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
                 savedComments.forEach(comment => this.displayComment(comment));
             }
