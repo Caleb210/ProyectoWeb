@@ -1,48 +1,323 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Proyecto</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Votación Accesible</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container-votacion {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            text-align: center;
+        }
+        .candidato {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .candidato img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .candidato p {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .candidato:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .seleccionado {
+            border: 3px solid green;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.5);
+        }
+        .accesibilidad {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+        .accesibilidad img {
+            width: 50px;
+            cursor: pointer;
+        }
+        .menu-accesibilidad {
+            display: none;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+            text-align: center;
+        }
+        .alto-contraste {
+            background-color: black !important;
+            color: yellow !important;
+        }
+        .alto-contraste .candidato {
+            background-color: #333;
+            color: yellow;
+        }
+        .alto-contraste .btn {
+            background-color: yellow;
+            color: black;
+        }
+        .modal-custom {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            text-align: center;
+            z-index: 1000;
+        }
+        .modal-custom strong {
+            font-size: 1.2em;
+            color: #007bff;
+            word-break: break-all;
+        }
+        .modal-custom p {
+            margin: 15px 0;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Seleccione su Candidato</h1>
-        <div id="opciones">
-            <div class="opcion-container" onclick="seleccionarCandidato('Candidato A', this)">
-                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato A">
-                <p>Candidato A</p>
-            </div>
-            <div class="opcion-container" onclick="seleccionarCandidato('Candidato B', this)">
-                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato B">
-                <p>Candidato B</p>
-            </div>
-            <div class="opcion-container" onclick="seleccionarCandidato('Candidato C', this)">
-                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato C">
-                <p>Candidato C</p>
-            </div>
-            <div class="opcion-container" onclick="seleccionarCandidato('Candidato D', this)">
-                <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato D">
-                <p>Candidato D</p>
-            </div>
-        </div>
-        <button id="confirmar-btn" onclick="mostrarModal()" disabled>Confirmar Voto</button>
-    </div>
 
-    <div id="modal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Confirmar Voto</h2>
-            <p>¿Está seguro de que quiere votar por <span id="candidato-seleccionado"></span>?</p>
-            <button onclick="confirmarVoto()">Sí, Confirmar</button>
-            <button onclick="cerrarModal()">Cancelar</button>
+    <!-- Botón de Accesibilidad -->
+    <div class="accesibilidad">
+        <img id="accesibilidadBtn" src="https://pngimg.com/uploads/disabled/disabled_PNG26.png" alt="Modo Accesible">
+        <div class="menu-accesibilidad" id="menuAccesibilidad">
+            <button id="modoAccesible">Modo Alto Contraste</button>
+            <select id="idioma" onchange="cambiarIdioma()">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
         </div>
     </div>
 
-    <div id="comprobante" class="hidden">
+    <div class="container-votacion">
+        <h2 id="titulo">Seleccione su Candidato</h2>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6 col-lg-3 col-6">
+                <div class="candidato" onclick="seleccionarCandidato('Candidato A', this)">
+                    <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato A">
+                    <p id="candidatoA">Candidato A</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 col-6">
+                <div class="candidato" onclick="seleccionarCandidato('Candidato B', this)">
+                    <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato B">
+                    <p id="candidatoB">Candidato B</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 col-6">
+                <div class="candidato" onclick="seleccionarCandidato('Candidato C', this)">
+                    <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato C">
+                    <p id="candidatoC">Candidato C</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 col-6">
+                <div class="candidato" onclick="seleccionarCandidato('Candidato D', this)">
+                    <img src="https://p.turbosquid.com/ts-thumb/5X/ylQNYg/TW/preview1/png/1676216837/600x600/fit_q87/91f90c8deb4a5365af23293194ee0815ab4a5992/preview1.jpg" alt="Candidato D">
+                    <p id="candidatoD">Candidato D</p>
+                </div>
+            </div>
+        </div>
+        <button id="confirmar-btn" class="btn btn-success mt-3" onclick="mostrarModal()" disabled>Confirmar Voto</button>
+    </div>
+
+    <!-- Modales -->
+    <div class="overlay" id="overlay"></div>
+    <div class="modal-custom" id="modal">
+        <h2>Confirmar Voto</h2>
+        <p>¿Está seguro de que quiere votar por <span id="candidato-seleccionado"></span>?</p>
+        <button class="btn btn-primary" onclick="confirmarVoto()">Sí, Confirmar</button>
+        <button class="btn btn-danger" onclick="cerrarModal()">Cancelar</button>
+    </div>
+
+    <div class="modal-custom" id="modal-resultado">
         <h2>Voto Registrado</h2>
-        <p id="comprobante-texto"></p>
+        <p>Ha votado por: <br><strong id="candidato-votado"></strong></p>
+        <p>Código de verificación: <br><strong id="codigo-verificacion"></strong></p>
+        <button class="btn btn-primary" onclick="cerrarModalResultado()">Cerrar</button>
     </div>
-</body>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let candidatoSeleccionado = "";
+
+            function seleccionarCandidato(nombre, elemento) {
+                document.querySelectorAll(".candidato").forEach(c => c.classList.remove("seleccionado"));
+                elemento.classList.add("seleccionado");
+                candidatoSeleccionado = nombre;
+                document.getElementById("confirmar-btn").disabled = false;
+            }
+
+            function mostrarModal() {
+                if (!candidatoSeleccionado) return;
+                document.getElementById("candidato-seleccionado").textContent = candidatoSeleccionado;
+                document.getElementById("modal").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            }
+
+            function cerrarModal() {
+                document.getElementById("modal").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+
+            function generarCodigoVerificacion() {
+                const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let codigo = '';
+                for (let i = 0; i < 8; i++) {
+                    codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+                }
+                return `${Math.floor(Math.random() * 9) + 1}.${codigo}`;
+            }
+
+            function confirmarVoto() {
+                const codigo = generarCodigoVerificacion();
+                
+                document.getElementById("modal").style.display = "none";
+                document.getElementById("candidato-votado").textContent = candidatoSeleccionado;
+                document.getElementById("codigo-verificacion").textContent = codigo;
+                document.getElementById("modal-resultado").style.display = "block";
+                
+                document.querySelectorAll(".candidato").forEach(c => c.classList.remove("seleccionado"));
+                document.getElementById("confirmar-btn").disabled = true;
+                candidatoSeleccionado = "";
+            }
+
+            function cerrarModalResultado() {
+                document.getElementById("modal-resultado").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+
+            document.getElementById("accesibilidadBtn").addEventListener("click", function () {
+                const menu = document.getElementById("menuAccesibilidad");
+                menu.style.display = menu.style.display === "block" ? "none" : "block";
+            });
+
+            document.getElementById("modoAccesible").addEventListener("click", function () {
+                document.body.classList.toggle("alto-contraste");
+            });
+
+            function cambiarIdioma() {
+                let idioma = document.getElementById("idioma").value;
+                document.documentElement.lang = idioma;
+
+                const textos = {
+                    "es": {
+                        "titulo": "Seleccione su Candidato",
+                        "confirmar": "Confirmar Voto",
+                        "confirmarTexto": "¿Está seguro de que quiere votar por",
+                        "botonConfirmar": "Sí, Confirmar",
+                        "botonCancelar": "Cancelar",
+                        "candidatoA": "Candidato A",
+                        "candidatoB": "Candidato B",
+                        "candidatoC": "Candidato C",
+                        "candidatoD": "Candidato D",
+                        "votoRegistrado": "Voto Registrado",
+                        "haVotadoPor": "Ha votado por:",
+                        "codigoVerificacion": "Código de verificación:",
+                        "cerrar": "Cerrar"
+                    },
+                    "en": {
+                        "titulo": "Select your Candidate",
+                        "confirmar": "Confirm Vote",
+                        "confirmarTexto": "Are you sure you want to vote for",
+                        "botonConfirmar": "Yes, Confirm",
+                        "botonCancelar": "Cancel",
+                        "candidatoA": "Candidate A",
+                        "candidatoB": "Candidate B",
+                        "candidatoC": "Candidate C",
+                        "candidatoD": "Candidate D",
+                        "votoRegistrado": "Vote Registered",
+                        "haVotadoPor": "You voted for:",
+                        "codigoVerificacion": "Verification Code:",
+                        "cerrar": "Close"
+                    },
+                    "fr": {
+                        "titulo": "Sélectionnez votre candidat",
+                        "confirmar": "Confirmer le vote",
+                        "confirmarTexto": "Êtes-vous sûr de vouloir voter pour",
+                        "botonConfirmar": "Oui, Confirmer",
+                        "botonCancelar": "Annuler",
+                        "candidatoA": "Candidat A",
+                        "candidatoB": "Candidat B",
+                        "candidatoC": "Candidat C",
+                        "candidatoD": "Candidat D",
+                        "votoRegistrado": "Vote Enregistré",
+                        "haVotadoPor": "Vous avez voté pour:",
+                        "codigoVerificacion": "Code de vérification:",
+                        "cerrar": "Fermer"
+                    }
+                };
+
+                // Actualizar textos principales
+                document.getElementById("titulo").textContent = textos[idioma].titulo;
+                document.getElementById("confirmar-btn").textContent = textos[idioma].confirmar;
+                
+                // Actualizar modal de confirmación
+                document.getElementById("modal").querySelector("h2").textContent = textos[idioma].confirmar;
+                document.getElementById("modal").querySelector("p").innerHTML = `${textos[idioma].confirmarTexto} <span id='candidato-seleccionado'>${candidatoSeleccionado}</span>?`;
+                document.getElementById("modal").querySelector(".btn-primary").textContent = textos[idioma].botonConfirmar;
+                document.getElementById("modal").querySelector(".btn-danger").textContent = textos[idioma].botonCancelar;
+
+                // Actualizar nombres de candidatos
+                document.getElementById("candidatoA").textContent = textos[idioma].candidatoA;
+                document.getElementById("candidatoB").textContent = textos[idioma].candidatoB;
+                document.getElementById("candidatoC").textContent = textos[idioma].candidatoC;
+                document.getElementById("candidatoD").textContent = textos[idioma].candidatoD;
+
+                // Actualizar modal de resultado
+                document.getElementById("modal-resultado").querySelector("h2").textContent = textos[idioma].votoRegistrado;
+                document.getElementById("modal-resultado").querySelectorAll("p")[0].innerHTML = `${textos[idioma].haVotadoPor} <br><strong id="candidato-votado"></strong>`;
+                document.getElementById("modal-resultado").querySelectorAll("p")[1].innerHTML = `${textos[idioma].codigoVerificacion} <br><strong id="codigo-verificacion"></strong>`;
+                document.getElementById("modal-resultado").querySelector("button").textContent = textos[idioma].cerrar;
+            }
+
+            window.seleccionarCandidato = seleccionarCandidato;
+            window.mostrarModal = mostrarModal;
+            window.cerrarModal = cerrarModal;
+            window.confirmarVoto = confirmarVoto;
+            window.cerrarModalResultado = cerrarModalResultado;
+            window.cambiarIdioma = cambiarIdioma;
+        });
+    </script>
+</body>
 </html>

@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
+        /* Todo el CSS original se mantiene igual */
         body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: row;
             height: 100vh;
             background: url('https://images8.alphacoders.com/911/911290.jpg') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             padding: 20px;
+            position: relative;
         }
+
         .container {
             background: rgba(255, 255, 255, 0.97);
             padding: 30px;
@@ -27,11 +30,11 @@
             text-align: center;
             backdrop-filter: blur(12px);
         }
-        .container h2 {
-            margin-bottom: 15px;
-            font-size: 24px;
-            font-weight: bold;
+
+        .container h2, label, p {
+            color: black;
         }
+
         input, select, button {
             width: 100%;
             padding: 12px;
@@ -41,6 +44,7 @@
             font-size: 16px;
             box-sizing: border-box;
         }
+
         button {
             background-color: #007bff;
             color: white;
@@ -49,9 +53,11 @@
             border: none;
             transition: background 0.3s ease-in-out;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         a {
             display: block;
             margin-top: 15px;
@@ -60,40 +66,116 @@
             font-weight: bold;
             font-size: 14px;
         }
+
         a:hover {
             text-decoration: underline;
         }
-        @media (max-width: 500px) {
-            .container {
-                padding: 20px;
-                width: 90%;
+
+        .accesibilidad {
+            position: absolute;
+            left: 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .accesibilidad img {
+            width: 70px;
+            cursor: pointer;
+        }
+
+        .menu-accesibilidad {
+            display: none;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .menu-accesibilidad button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .alto-contraste {
+            background: black !important;
+            color: yellow;
+        }
+
+        .alto-contraste .container {
+            background: rgba(20, 20, 20, 0.97);
+            color: yellow;
+        }
+
+        .alto-contraste h2, .alto-contraste label, .alto-contraste p {
+            color: yellow;
+        }
+
+        .alto-contraste input, .alto-contraste select {
+            background: #222;
+            color: white;
+            border: 1px solid yellow;
+        }
+
+        .alto-contraste input::placeholder {
+            color: lightgray;
+        }
+
+        .alto-contraste button {
+            background: black;
+            color: white;
+            border: 1px solid yellow;
+        }
+
+        .alto-contraste button:hover {
+            background: #222;
+        }
+
+        .alto-contraste a {
+            color: cyan;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
             }
-            input, select, button {
-                padding: 10px;
-                font-size: 14px;
-            }
-            .container h2 {
-                font-size: 20px;
+            .accesibilidad {
+                position: relative;
+                left: auto;
+                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="accesibilidad">
+        <img id="accesibilidadBtn" src="https://pngimg.com/uploads/disabled/disabled_PNG26.png" alt="Modo Accesible">
+        <div class="menu-accesibilidad" id="menuAccesibilidad">
+            <button id="modoAccesible">Modo Alto Contraste</button>
+            <button onclick="cambiarIdioma('es')">Español</button>
+            <button onclick="cambiarIdioma('en')">English</button>
+            <button onclick="cambiarIdioma('fr')">Français</button>
+        </div>
+    </div>
+
     <div class="container">
-        <h2>Registro de Usuario</h2>
+        <h2 data-key="titulo">Registro de Usuario</h2>
         <form id="registroForm">
-            <label for="cedula">Cédula (Formato: X-XXXX-XXXX):</label>
-            <input type="text" id="cedula" pattern="\\d-\\d{4}-\\d{4}" required>
+            <label for="cedula" data-key="cedula">Cédula (Formato: X-XXXX-XXXX):</label>
+            <input type="text" id="cedula" required placeholder="Ingrese su cédula" data-translate-placeholder="placeholderCedula">
             
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" required>
+            <label for="nombre" data-key="nombre">Nombre:</label>
+            <input type="text" id="nombre" required placeholder="Ingrese su nombre" data-translate-placeholder="placeholderNombre">
             
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" required>
+            <label for="apellidos" data-key="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" required placeholder="Ingrese sus apellidos" data-translate-placeholder="placeholderApellidos">
             
-            <label for="provincia">Provincia de nacimiento:</label>
+            <label for="provincia" data-key="provincia">Provincia de nacimiento:</label>
             <select id="provincia" required>
-                <option value="">Seleccione una provincia</option>
+                <option value="" data-key="seleccionProvincia">Seleccione una provincia</option>
                 <option value="San José">San José</option>
                 <option value="Alajuela">Alajuela</option>
                 <option value="Cartago">Cartago</option>
@@ -102,17 +184,106 @@
                 <option value="Puntarenas">Puntarenas</option>
                 <option value="Limón">Limón</option>
             </select>
-            
-            <label for="validacion">Mecanismo de Validación:</label>
+
+            <label for="validacion" data-key="validacion">Mecanismo de Validación:</label>
             <select id="validacion" required>
-                <option value="biometrico">Biométrico</option>
-                <option value="doble_paso">Autenticación en dos pasos</option>
+                <option value="biometrico" data-key="biometrico">Biométrico</option>
+                <option value="doble_paso" data-key="doblePaso">Autenticación en dos pasos</option>
             </select>
             
-            <button type="submit">Registrar</button>
+            <button type="submit" data-key="registrar">Registrar</button>
         </form>
-        <a href="indexLogin.html">Volver al inicio de sesión</a>
+        <a href="indexLogin.html" data-key="volver">Volver al inicio de sesión</a>
     </div>
+
+    <script>
+        // Traducciones
+        const traducciones = {
+            "es": {
+                "titulo": "Registro de Usuario",
+                "cedula": "Cédula (Formato: X-XXXX-XXXX):",
+                "nombre": "Nombre:",
+                "apellidos": "Apellidos:",
+                "provincia": "Provincia de nacimiento:",
+                "validacion": "Mecanismo de Validación:",
+                "registrar": "Registrar",
+                "volver": "Volver al inicio de sesión",
+                "seleccionProvincia": "Seleccione una provincia",
+                "biometrico": "Biométrico",
+                "doblePaso": "Autenticación en dos pasos",
+                "placeholderCedula": "Ingrese su cédula",
+                "placeholderNombre": "Ingrese su nombre",
+                "placeholderApellidos": "Ingrese sus apellidos"
+            },
+            "en": {
+                "titulo": "User Registration",
+                "cedula": "ID (Format: X-XXXX-XXXX):",
+                "nombre": "Name:",
+                "apellidos": "Last Name:",
+                "provincia": "Birth Province:",
+                "validacion": "Validation Method:",
+                "registrar": "Register",
+                "volver": "Back to login",
+                "seleccionProvincia": "Select a province",
+                "biometrico": "Biometric",
+                "doblePaso": "Two-Step Authentication",
+                "placeholderCedula": "Enter your ID",
+                "placeholderNombre": "Enter your name",
+                "placeholderApellidos": "Enter your last name"
+            },
+            "fr": {
+                "titulo": "Inscription",
+                "cedula": "ID (Format: X-XXXX-XXXX):",
+                "nombre": "Nom:",
+                "apellidos": "Prénom:",
+                "provincia": "Province de naissance:",
+                "validacion": "Méthode de validation:",
+                "registrar": "S'inscrire",
+                "volver": "Retour à la connexion",
+                "seleccionProvincia": "Sélectionnez une province",
+                "biometrico": "Biométrique",
+                "doblePaso": "Authentification en deux étapes",
+                "placeholderCedula": "Entrez votre ID",
+                "placeholderNombre": "Entrez votre nom",
+                "placeholderApellidos": "Entrez votre prénom"
+            }
+        };
+
+        // Función para cambiar idioma
+        function cambiarIdioma(idioma) {
+            document.querySelectorAll("[data-key]").forEach(elemento => {
+                const clave = elemento.getAttribute("data-key");
+                if(traducciones[idioma][clave]) {
+                    elemento.textContent = traducciones[idioma][clave];
+                }
+            });
+
+            document.getElementById("cedula").placeholder = traducciones[idioma]["placeholderCedula"];
+            document.getElementById("nombre").placeholder = traducciones[idioma]["placeholderNombre"];
+            document.getElementById("apellidos").placeholder = traducciones[idioma]["placeholderApellidos"];
+
+            document.querySelectorAll("option[data-key]").forEach(opcion => {
+                const clave = opcion.getAttribute("data-key");
+                opcion.textContent = traducciones[idioma][clave];
+            });
+        }
+
+        // Manejar el formulario
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = 'indexLogin.html'; // Redirección directa
+        });
+
+        // Accesibilidad
+        document.getElementById("accesibilidadBtn").addEventListener("click", function() {
+            const menu = document.getElementById("menuAccesibilidad");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        });
+
+        document.getElementById("modoAccesible").addEventListener("click", function() {
+            document.body.classList.toggle("alto-contraste");
+        });
+    </script>
 </body>
 </html>
 
