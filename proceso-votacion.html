@@ -116,6 +116,10 @@
     </style>
 </head>
 <body>
+    <form id="formVoto" action="votar.php" method="POST" style="display: none;">
+        <input type="hidden" name="candidato" id="candidatoInput">
+    </form>
+    
 
     <!-- Botón de Accesibilidad -->
     <div class="accesibilidad">
@@ -127,10 +131,16 @@
                 <option value="en">English</option>
                 <option value="fr">Français</option>
             </select>
-        </div>
+        </div> 
     </div>
 
+
     <div class="container-votacion">
+        <div class="d-flex justify-content-end">
+            <a href="indexLogin.html" class="btn btn-secondary btn-sm">Cerrar Sesión</a>
+            <a href="Soporte.html" class="btn btn-info btn-sm">Soporte</a>
+
+        </div>
         <h2 id="titulo">Seleccione su Candidato</h2>
         <div class="row justify-content-center mt-4">
             <div class="col-md-6 col-lg-3 col-6">
@@ -210,17 +220,12 @@
             }
 
             function confirmarVoto() {
-                const codigo = generarCodigoVerificacion();
-                
-                document.getElementById("modal").style.display = "none";
-                document.getElementById("candidato-votado").textContent = candidatoSeleccionado;
-                document.getElementById("codigo-verificacion").textContent = codigo;
-                document.getElementById("modal-resultado").style.display = "block";
-                
-                document.querySelectorAll(".candidato").forEach(c => c.classList.remove("seleccionado"));
-                document.getElementById("confirmar-btn").disabled = true;
-                candidatoSeleccionado = "";
-            }
+    const codigo = generarCodigoVerificacion();
+    alert("Voto enviado con código: " + codigo); // opcional
+    document.getElementById("candidatoInput").value = candidatoSeleccionado;
+    document.getElementById("formVoto").submit();
+}
+
 
             function cerrarModalResultado() {
                 document.getElementById("modal-resultado").style.display = "none";

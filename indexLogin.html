@@ -150,26 +150,21 @@
 
     <div class="container">
         <h2 data-key="titulo">Inicio de Sesión</h2>
-        <form id="loginForm">
+        <form id="loginForm" action="login.php" method="POST">
             <label for="id" data-key="cedula">Cédula/Pasaporte:</label>
-            <input type="text" id="id" required placeholder="Ingrese su cédula o pasaporte">
-            
+            <input type="text" name="id" id="id" required placeholder="Ingrese su cédula o pasaporte">
+    
             <label for="password" data-key="contrasena">Contraseña:</label>
-            <input type="password" id="password" required placeholder="Ingrese su contraseña">
-            
-            <button type="button" onclick="enviarCodigo()" data-key="enviarCodigo">Enviar Código MFA</button>
-            
-            <!-- Nueva sección para el código MFA -->
-            <div id="mfaSection">
-                <label for="codigoMFA" data-key="codigoMFA">Código MFA:</label>
-                <input type="text" id="codigoMFA" required placeholder="Ingrese el código recibido">
-                <button type="button" id="btnIniciarSesion" onclick="iniciarSesion()" data-key="iniciarSesion">Iniciar Sesión</button>
-            </div>
-            
+            <input type="password" name="password" id="password" required placeholder="Ingrese su contraseña">
+    
+            <button type="submit" id="btnIniciarSesion" data-key="iniciarSesion">Iniciar Sesión</button>
+    
             <p data-key="registroPregunta">¿Aún no se ha registrado?</p>
             <a href="registro.html" data-key="registroEnlace">Haga click aquí para registrarse</a>
         </form>
     </div>
+    
+    
 
     <script>
         // Función original mejorada
